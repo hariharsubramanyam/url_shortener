@@ -5,7 +5,7 @@ This is a URL shortener web app. With it, you can create a short name (e.g. urls
 
 Then, you can use the short url: `localhost:3000/links/urlshort` to navigate you to the long URL `https://github.com/hariharsubramanyam/url_shortener/`.
 
-This app is a simple app I'll use to teach a recitation on Node for MIT's Software Studio class.
+This is a simple app I'll use to teach a recitation on Node for MIT's Software Studio class.
 
 The app includes (in less than 150 lines of code):
 

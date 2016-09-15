@@ -12,6 +12,7 @@ The app includes (in less than 150 lines of code):
 1. A client and server
 2. A command line tool for getting and setting the URL mappings.
 3. Logic for persisting the mappings to a file
+4. Generating random short names for URLs
 
 # Usage
 

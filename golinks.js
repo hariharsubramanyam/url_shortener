@@ -36,8 +36,7 @@ var GoLinks = function() {
    * @param {Function} callback - The function to execute after the saving is complete.
    */
   that.save = function(callback) {
-    callback = callback ? callback : function() {};
-    fs.writeFile(FILENAME, JSON.stringify(links), callback);
+    fs.writeFile(FILENAME, JSON.stringify(links), callback ? callback : function() {});
   }
 
   /**

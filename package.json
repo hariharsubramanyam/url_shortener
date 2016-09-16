@@ -1,7 +1,6 @@
 {
-  "name": "golinks",
+  "name": "url_shortener",
   "version": "1.0.0",
-  "main": "main.js",
   "dependencies": {
     "body-parser": "^1.15.2",
     "chance": "^1.0.4",

@@ -1,21 +1,24 @@
-// Import the fs module.
+// Import file system utilities.
 var fs = require("fs");
+
+// Import randomization library for generating random short names. 
+var chancejs = require("chance");
 
 /**
  * Maintains a mapping from short names to URLs.
  */
-var GoLinks = function() {
-  var that = Object.create(GoLinks.prototype);
+var LinkMap = function() {
+  var that = Object.create(LinkMap.prototype);
 
   // Create private variables.
-  var chance = require("chance").Chance();
-  var FILENAME = "golinks.json";
-  var links = {};
+  var chance = chancejs.Chance();
+  var FILENAME = "linkmap.json";
+  var links = new Map(); // This is an ES6 feature.
 
   // Try to read from the file and populate the mapping.
   // An exception is thrown (and ignored) if the file doesn't exist.
   try {
-    links = JSON.parse(fs.readFileSync(FILENAME))
+    links = new Map(JSON.parse(fs.readFileSync(FILENAME)));
   } catch (ex) {}
 
   /**
@@ -27,7 +30,7 @@ var GoLinks = function() {
    */
   that.add = function(url, short) {
     short = short ? short : chance.word();
-    links[short] = url;
+    links.set(short, url);
     return short;
   };
 
@@ -36,7 +39,8 @@ var GoLinks = function() {
    * @param {Function} callback - The function to execute after the saving is complete.
    */
   that.save = function(callback) {
-    fs.writeFile(FILENAME, JSON.stringify(links), callback ? callback : function() {});
+    //[...links] is ES6 spread syntax, it turns the map into an array of [key, value] pairs.
+    fs.writeFile(FILENAME, JSON.stringify([...links]), callback ? callback : function() {});
   }
 
   /**
@@ -45,11 +49,11 @@ var GoLinks = function() {
    * @returns {String} The URL or undefined if there is no URL defined for the short name.
    */
   that.expand = function(short) {
-    return links[short];
+    return links.get(short);
   };
 
   Object.freeze(that);
   return that;
 };
 
-module.exports = GoLinks();
+module.exports = LinkMap();

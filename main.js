@@ -1,7 +1,7 @@
 var express = require("express");
 var bodyParser = require('body-parser')
 var path = require("path");
-var golinks = require("./golinks.js");
+var linkmap = require("./linkmap.js");
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -13,7 +13,7 @@ app.get("/", function(req, res) {
 
 // Expand shortened URL.
 app.get("/links/:short", function(req, res) {
-  var url = golinks.expand(req.params.short);
+  var url = linkmap.expand(req.params.short);
   if (url) {
     res.redirect(url);
   } else {
@@ -23,10 +23,10 @@ app.get("/links/:short", function(req, res) {
 
 // Shorten URL.
 app.post("/links", function(req, res) {
-  var short = req.body.short;
+  var short = req.body.short.replace(/\s+/g, '');
   short = short.length !== 0 ? short : undefined;
-  short = golinks.add(req.body.url, short);
-  golinks.save(function() {
+  short = linkmap.add(req.body.url, short);
+  linkmap.save(function() {
     res.send(short);
   });
 });

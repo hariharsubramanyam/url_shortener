@@ -2,7 +2,7 @@
 var fs = require("fs");
 
 // Import randomization library for generating random short names. 
-var chancejs = require("chance");
+var chance = require("chance").Chance();
 
 /**
  * Maintains a mapping from short names to URLs.
@@ -11,7 +11,6 @@ var LinkMap = function() {
   var that = Object.create(LinkMap.prototype);
 
   // Create private variables.
-  var chance = chancejs.Chance();
   var FILENAME = "linkmap.json";
   var links = new Map(); // This is an ES6 feature.
 

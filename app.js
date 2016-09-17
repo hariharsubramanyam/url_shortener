@@ -5,11 +5,7 @@ var linkmap = require("./linkmap.js");
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
-
-// Create mapping page.
-app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname+'/index.html'));
-});
+app.use(express.static('public'));
 
 // Expand shortened URL.
 app.get("/links/:short", function(req, res) {

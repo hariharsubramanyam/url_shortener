@@ -4,6 +4,6 @@ $(document).on("click", "#createButton", function() {
     "short": $("#short").val(), 
     "url": $("#url").val()
   }, function(data) {
-    window.location = data.url;
+    alert("Created mapping from " + data.short + " to " + data.url);
   });
 });

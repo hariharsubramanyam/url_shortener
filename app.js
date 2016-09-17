@@ -23,7 +23,7 @@ app.post("/links", function(req, res) {
   short = short.length !== 0 ? short : undefined;
   short = linkmap.add(req.body.url, short);
   linkmap.save(function() {
-    res.send(short);
+    res.json({"url": req.body.url, "short": short});
   });
 });
 

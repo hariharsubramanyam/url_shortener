@@ -3,7 +3,7 @@ $(document).on("click", "#createButton", function() {
   $.post("/links", {
     "short": $("#short").val(), 
     "url": $("#url").val()
-  }, function() {
-    window.location = $("#url").val();
+  }, function(data) {
+    window.location = data.url;
   });
 });

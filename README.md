@@ -10,9 +10,8 @@ This is a simple app I'll use to teach a recitation on Node for MIT's Software S
 The app includes:
 
 1. A client and server
-2. A command line tool for getting and setting the URL mappings.
-3. Logic for persisting the mappings to a file
-4. Logic for generating random short names for URLs
+2. Logic for persisting the mappings to a file
+3. Logic for generating random short names for URLs
 
 # Usage
 

@@ -1,10 +1,10 @@
 var express = require("express");
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 var path = require("path");
 var linkmap = require("./linkmap.js");
 
 var app = express();
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 
 // Expand shortened URL.

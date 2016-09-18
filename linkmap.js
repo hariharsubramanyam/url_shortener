@@ -40,10 +40,10 @@ var LinkMap = function() {
    */
   that.save = function(callback) {
     var pairs = links.keys().map(function(key) {
-      return [key, links.get(key)]
+      return [key, links.get(key)];
     });
     fs.writeFile(FILENAME, JSON.stringify(pairs), callback ? callback : function() {});
-  }
+  };
 
   /**
    * Expand the short name to a URL.

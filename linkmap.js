@@ -12,12 +12,12 @@ var LinkMap = function() {
 
   // Create private variables.
   var FILENAME = "linkmap.json";
-  var links = new Map(); // This is an ES6 feature.
+  var links = []; // This will hold [short name, URL] pairs.
 
   // Try to read from the file and populate the mapping.
   // An exception is thrown (and ignored) if the file doesn't exist.
   try {
-    links = new Map(JSON.parse(fs.readFileSync(FILENAME)));
+    links = JSON.parse(fs.readFileSync(FILENAME));
   } catch (ex) {}
 
   /**
@@ -29,7 +29,14 @@ var LinkMap = function() {
    */
   that.add = function(url, short) {
     short = short ? short : chance.word();
-    links.set(short, url);
+    var pairs = links.filter(function(pair) {
+      return pair[0] === short;
+    });
+    if (pairs.length > 0) {
+      pairs[0][1] = url;
+    } else {
+      links.push([short, url]);
+    }
     return short;
   };
 
@@ -38,8 +45,7 @@ var LinkMap = function() {
    * @param {Function} callback - The function to execute after the saving is complete.
    */
   that.save = function(callback) {
-    //[...links] is ES6 spread syntax, it turns the map into an array of [key, value] pairs.
-    fs.writeFile(FILENAME, JSON.stringify([...links]), callback ? callback : function() {});
+    fs.writeFile(FILENAME, JSON.stringify(links), callback ? callback : function() {});
   }
 
   /**
@@ -48,7 +54,10 @@ var LinkMap = function() {
    * @returns {String} The URL or undefined if there is no URL defined for the short name.
    */
   that.expand = function(short) {
-    return links.get(short);
+    var pairs = links.filter(function(pair) {
+      return pair[0] === short;
+    });
+    return pairs.length > 0 ? pairs[0][1] : undefined;
   };
 
   Object.freeze(that);

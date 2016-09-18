@@ -1,7 +1,6 @@
-// Import file system utilities.
+// Import file system utilities, hash map, and randomization library.
 var fs = require("fs");
-
-// Import randomization library for generating random short names. 
+var HashMap = require("hashmap");
 var chance = require("chance").Chance();
 
 /**
@@ -12,12 +11,14 @@ var LinkMap = function() {
 
   // Create private variables.
   var FILENAME = "linkmap.json";
-  var links = []; // This will hold [short name, URL] pairs.
+  var links = new HashMap(); // Maps short names to URLs (the library uses new).
 
   // Try to read from the file and populate the mapping.
   // An exception is thrown (and ignored) if the file doesn't exist.
   try {
-    links = JSON.parse(fs.readFileSync(FILENAME));
+    JSON.parse(fs.readFileSync(FILENAME)).forEach(function(pair) {
+      links.set(pair[0], pair[1]);
+    });
   } catch (ex) {}
 
   /**
@@ -29,14 +30,7 @@ var LinkMap = function() {
    */
   that.add = function(url, short) {
     short = short ? short : chance.word();
-    var pairs = links.filter(function(pair) {
-      return pair[0] === short;
-    });
-    if (pairs.length > 0) {
-      pairs[0][1] = url;
-    } else {
-      links.push([short, url]);
-    }
+    links.set(short, url);
     return short;
   };
 
@@ -45,7 +39,10 @@ var LinkMap = function() {
    * @param {Function} callback - The function to execute after the saving is complete.
    */
   that.save = function(callback) {
-    fs.writeFile(FILENAME, JSON.stringify(links), callback ? callback : function() {});
+    var pairs = links.keys().map(function(key) {
+      return [key, links.get(key)]
+    });
+    fs.writeFile(FILENAME, JSON.stringify(pairs), callback ? callback : function() {});
   }
 
   /**
@@ -54,10 +51,7 @@ var LinkMap = function() {
    * @returns {String} The URL or undefined if there is no URL defined for the short name.
    */
   that.expand = function(short) {
-    var pairs = links.filter(function(pair) {
-      return pair[0] === short;
-    });
-    return pairs.length > 0 ? pairs[0][1] : undefined;
+    return links.has(short) ? links.get(short) : undefined;
   };
 
   Object.freeze(that);

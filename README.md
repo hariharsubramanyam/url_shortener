@@ -16,5 +16,5 @@ The app includes:
 # Usage
 
 ```
-npm install && node main.js
+npm install && node app.js
 ```
